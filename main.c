@@ -42,6 +42,27 @@ int ushell_num_commands() {
     return sizeof(ushell_list_commands) / sizeof(char *);
 }
 
+// Function where the system command is executed
+void execArgs(char** args)
+{
+	// Forking a child
+	pid_t pid = fork();
+
+	if (pid == -1) {
+		printf("\nFailed forking child..");
+		return;
+	} else if (pid == 0) {
+		if (execvp(args[0], args) < 0) {
+			printf("\nCould not execute command..");
+		}
+		exit(0);
+	} else {
+		// waiting for child to terminate
+		wait(NULL);
+		return;
+	}
+}
+
 // All the seven function of Seven commands go here
 //exit is already done
 
