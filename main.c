@@ -107,6 +107,7 @@ int ushell_execute(char **args) {
         }
     }
 
+    return execArgs(args);
 
 }
 
