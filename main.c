@@ -66,6 +66,7 @@ void execArgs(char** args)
 // All the seven function of Seven commands go here
 //exit is already done
 
+void execCommand(char**args){
 //echo function
 if (strcmp(args[0], "echo") == 0) {
                         if(strcmp(args[1], "$$") == 0) {
@@ -77,7 +78,7 @@ if (strcmp(args[0], "echo") == 0) {
                 } 
 
 //cd function
-if (strcmp(args[0], "cd") == 0) {
+else if (strcmp(args[0], "cd") == 0) {
                         if(args[1]==NULL) {
                                 printf("%s\n", getenv("PATH"));
                                 if(chdir(getenv("PATH")) == -1) {
@@ -91,7 +92,7 @@ if (strcmp(args[0], "cd") == 0) {
                                 }
                         }
                 }
-
+}
 int ushell_exit(char **args) {
     return 0;
 }
