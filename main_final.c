@@ -195,18 +195,18 @@ int ushell_chmod(char **argv)
 //syntax: ./grep line s.txt  
 int ushell_grep(char** argv)
 {
-    char fn[30],pat[30],temp[200];
-    FILE *fp;
-
-    fp=fopen(argv[2],"r");
-    while(!feof(fp))
-    {
-        fgets(temp,1000,fp);
-        if(strstr(temp,argv[1])!=NULL)
-            printf("%s",temp);
-        }
-    fclose(fp);
-    
+char fn[30],pat[30],temp[200];
+FILE *fp;
+int line=0;
+fp=fopen(argv[2],"r");
+while(!feof(fp))
+{
+fgets(temp,1000,fp);
+line++;
+if(strstr(temp,argv[1])!=NULL)
+printf("Line-%d: %s",line,temp);
+}
+fclose(fp);
     return 1;
 }
 //Function for Help
