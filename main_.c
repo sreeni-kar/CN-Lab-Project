@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <errno.h>
 
 
 /*
@@ -66,34 +67,29 @@ int execArgs(char** args)
 // All the seven function of Seven commands go here
 //exit is already done
 
-void execCommand(char**args){
 //echo function
-if (strcmp(args[0], "echo") == 0) {
-    if(strcmp(args[1], "$$") == 0) {
-                                printf("%d\n", (int)getpid());
-                        } 
-                         else {
-                                printf("%s\n", args[1]);
-                        }
-                } 
-
-//cd function
-else if (strcmp(args[0], "cd") == 0) {
-                        if(args[1]==NULL) {
-                                printf("%s\n", getenv("PATH"));
-                                if(chdir(getenv("PATH")) == -1) {
-                                        fprintf(stderr, "getenv error: %s\n", strerror(errno));
-                                       // exit(1);
-                                }
-                        } else {
-                                if(chdir(args[1]) == -1) {
-                                        fprintf(stderr, "chdir error: %s\n", strerror(errno));
-                                       // exit(1);
-                                }
-                        }
-                }
+int ushell_echo(char *args) {
+    if(strcmp(args[1], "$$")) {
+        printf("%d\n", (int)getpid());
+    }
+    else {
+        printf("%s\n", args[1]);
+    }
 }
-
+//cd function
+int ushell_cd(char** args) {
+    if(args[1] == NULL) {
+        printf("%s\n", getenv("PATH"));
+        if(chdie(getenv("PATH")) == -1) {
+            fprintf(stderr, "getenv error: %s\n", stderror(errno));
+        }
+    }
+    else {
+        if (chdir(args[1]) == -1) {
+            fprintf(stderr, "chdir error: %s\n", stderror(errno));
+        }
+    }
+}
 
 //Function for pwd
 #define FILENAME_MAX 1024
