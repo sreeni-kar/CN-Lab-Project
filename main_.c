@@ -68,7 +68,7 @@ int execArgs(char** args)
 //exit is already done
 
 //echo function
-int ushell_echo(char *args) {
+int ushell_echo(char **args) {
     if(strcmp(args[1], "$$")) {
         printf("%d\n", (int)getpid());
     }
@@ -93,7 +93,7 @@ int ushell_cd(char** args) {
 
 //Function for pwd
 #define FILENAME_MAX 1024
-#define GetCurrentDir getcwd
+#define GetCurrentDir getcwd 
 
 char* GetCurrentWorkingDir() {
     char buff[FILENAME_MAX];
