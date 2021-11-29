@@ -106,6 +106,94 @@ int ushell_pwd(char **args) {
     return 1;
 }
 
+//Function for chmod
+//syntax: ./chmod s.txt rwxrwxrwx
+void output_permissions(mode_t m)
+{
+    putchar( m & S_IRUSR ? 'r' : '-' );
+    putchar( m & S_IWUSR ? 'w' : '-' );
+    putchar( m & S_IXUSR ? 'x' : '-' );
+    putchar( m & S_IRGRP ? 'r' : '-' );
+    putchar( m & S_IWGRP ? 'w' : '-' );
+    putchar( m & S_IXGRP ? 'x' : '-' );
+    putchar( m & S_IROTH ? 'r' : '-' );
+    putchar( m & S_IWOTH ? 'w' : '-' );
+    putchar( m & S_IXOTH ? 'x' : '-' );
+    putchar('\n');
+}
+
+int ushell_chmod(char **argv)
+{
+    const char *filename;
+    struct stat fs;
+    int r;
+
+    filename = argv[1];
+    printf("Permissions for '%s':\n",filename);
+    r = stat(filename,&fs);
+    if( r==-1)
+    {
+        fprintf(stderr,"Error reading '%s'\n",filename);
+        exit(1);
+    }
+
+    /* output the current permissions */
+    puts("Current permissions:");
+    output_permissions(fs.st_mode);
+
+    char perm[10];
+    strcpy(perm, argv[2]);
+    mode_t mode = 0;
+
+        if (perm[0] == 'r')
+            mode |= 0400;
+        if (perm[1] == 'w')
+            mode |= 0200;
+        if (perm[2] == 'x')
+            mode |= 0100;
+        if (perm[3] == 'r')
+            mode |= 0040;
+        if (perm[4] == 'w')
+            mode |= 0020;
+        if (perm[5] == 'x')
+            mode |= 0010;
+        if (perm[6] == 'r')
+            mode |= 0004;
+        if (perm[7] == 'w')
+            mode |= 0002;
+        if (perm[8] == 'x')
+            mode |= 0001;
+    r = chmod( filename,mode );
+    if( r!=0)
+    {
+        fprintf(stderr,"Unable to reset permissions on '%s'\n",filename);
+        exit(1);
+    }
+
+    puts("Updated permissions:");
+    stat(filename,&fs);
+    output_permissions(fs.st_mode);
+
+    return(0);
+}
+
+//Function for grep
+//syntax: ./grep line s.txt  
+int ushell_grep(char** argv)
+{
+char fn[30],pat[30],temp[200];
+FILE *fp;
+
+fp=fopen(argv[2],"r");
+while(!feof(fp))
+{
+fgets(temp,1000,fp);
+if(strstr(temp,argv[1])!=NULL)
+printf("%s",temp);
+}
+fclose(fp);
+}
+
 //Function for exit
 int ushell_exit(char **args) {
     return 0;
