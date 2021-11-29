@@ -183,13 +183,14 @@ int ushell_grep(char** argv)
 {
 char fn[30],pat[30],temp[200];
 FILE *fp;
-
+int line=0;
 fp=fopen(argv[2],"r");
 while(!feof(fp))
 {
 fgets(temp,1000,fp);
+line++;
 if(strstr(temp,argv[1])!=NULL)
-printf("%s",temp);
+printf("Line-%d: %s",line,temp);
 }
 fclose(fp);
 }
