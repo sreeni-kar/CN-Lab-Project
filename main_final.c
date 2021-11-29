@@ -116,7 +116,7 @@ int ushell_cd(char**args) {
 
 int ushell_pwd(char **args) {
     char buff[FILENAME_MAXI];
-    printf("%s\n", getcwd(buff, FILENAME_MAXI));
+    printf("%s", getcwd(buff, FILENAME_MAXI));
     return 1;
 }
 
@@ -321,8 +321,8 @@ void ushell_loop(){
     int status;
 
     do{
-        //We can add pwd to this after pwd function is done.
-        printf(">> ");
+        int x = ushell_pwd(args);
+        printf(">>");
         line = ushell_readline();
         args = ushell_splitline(line);
         status = ushell_execute(args);
