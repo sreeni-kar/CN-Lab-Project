@@ -68,7 +68,7 @@ int execArgs(char** args)
 //exit is already done
 
 //echo function
-int ushell_echo(char **args) {
+int ushell_echo(char**args) {
     if(strcmp(args[1], "$$")) {
         printf("%d\n", (int)getpid());
     }
@@ -77,7 +77,7 @@ int ushell_echo(char **args) {
     }
 }
 //cd function
-int ushell_cd(char** args) {
+int ushell_cd(char**args) {
     if(args[1] == NULL) {
         printf("%s\n", getenv("PATH"));
         if(chdie(getenv("PATH")) == -1) {
