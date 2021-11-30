@@ -7,7 +7,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-
+#include <time.h>
 
 /*
     Function declarations of all commands
@@ -19,7 +19,7 @@ int ushell_cd(char **args);
 int ushell_pwd(char **args);
 int ushell_help(char **args);
 int ushell_exit(char **args);
-
+int ushell_day(char **args);
 
 
 char *ushell_list_commands[] = {
@@ -29,7 +29,8 @@ char *ushell_list_commands[] = {
     "cd",
     "pwd",
     "exit",
-    "help"
+    "help",
+    "day"
 };
 
 char *ushell_desc_commands[] = {
@@ -39,7 +40,8 @@ char *ushell_desc_commands[] = {
     "Changes to  Specified Valid Directory",
     "Display's the Present working Directory",
     "This command will close the execution of shell",
-    "This will list all the commands that are built into the shell"
+    "This will list all the commands that are built into the shell",
+    "Returns day of the week"
 };
 
 int (*ushell_func_commands[])(char **) = {
@@ -49,7 +51,8 @@ int (*ushell_func_commands[])(char **) = {
     &ushell_cd,
     &ushell_pwd,
     &ushell_exit,
-    &ushell_help
+    &ushell_help,
+    &ushell_day
 };
 
 int ushell_num_commands() {
@@ -98,6 +101,36 @@ int ushell_echo(char**args) {
         }
     }
     printf("\n");
+    return 1;
+}
+
+//day
+int ushell_day(char ** args) {
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    int s, i;
+    int month[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    char* week[] = {
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+    };
+    int date = tm.tm_mday;
+    int mon = tm.tm_mon + 1;
+    int year = tm.tm_year + 1900;
+
+    if ((year % 400 == 0) || (year% 4 == 0) && (year % 100 != 0))
+        month[1] = 29;
+    for (i = 0; i < mon - 1; i++)
+        s = s + month[i];
+    s = s + (date + year + (year/4) - 2);
+    s = s%7;
+    printf("%s\n", week[s]);
+
     return 1;
 }
 //cd    
@@ -201,19 +234,19 @@ int ushell_chmod(char **argv)
 //syntax: ./grep line s.txt  
 int ushell_grep(char** argv)
 {
-char fn[30],pat[30],temp[200];
-FILE *fp;
-int line=0;
-fp=fopen(argv[2],"r");
-while(!feof(fp))
-{
-fgets(temp,1000,fp);
-line++;
-if(strstr(temp,argv[1])!=NULL)
-printf("Line-%d: %s",line,temp);
-}
-fclose(fp);
-    return 1;
+    char fn[30],pat[30],temp[200];
+    FILE *fp;
+    int line=0;
+    fp=fopen(argv[2],"r");
+    while(!feof(fp))
+    {
+    fgets(temp,1000,fp);
+    line++;
+    if(strstr(temp,argv[1])!=NULL)
+    printf("Line-%d: %s",line,temp);
+    }
+    fclose(fp);
+        return 1;
 }
 //Function for Help
 int ushell_help(char **args) {
