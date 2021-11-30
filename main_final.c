@@ -87,7 +87,7 @@ int ushell_launch(char **args)
 
 //echo function
 int ushell_echo(char**args) {
-    if(strcmp(args[1], "$$")) {
+    if(strcmp(args[1], "$$")==0) {
         printf("%d\n", (int)getpid());
     }
     else {
