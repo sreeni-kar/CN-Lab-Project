@@ -87,12 +87,18 @@ int ushell_launch(char **args)
 
 //echo function
 int ushell_echo(char**args) {
+    int i = 1;
     if(strcmp(args[1], "$$")==0) {
         printf("%d\n", (int)getpid());
     }
     else {
-        printf("%s\n", args[1]);
+        while (args[i] != NULL) {
+            printf("%s ", args[i]);
+            i++;
+        }
     }
+    printf("\n");
+    return 1;
 }
 //cd    
 int ushell_cd(char**args) {
@@ -224,6 +230,7 @@ int ushell_help(char **args) {
 }
 //Function for exit
 int ushell_exit(char **args) {
+    printf("Exiting.....\n");
     return 0;
 }
 
