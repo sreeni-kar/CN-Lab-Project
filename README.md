@@ -1,2 +1,2 @@
-# CN-Lab-Project
+# OS-Lab-Project
 UNIX COMMAND LINE INTERPRETER
